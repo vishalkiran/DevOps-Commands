@@ -825,4 +825,21 @@ proxy_pass http://servers;
 docker restart reverse-proxy
 Access the application at: http://15.206.89.202/
 
+
+
+-------------------------------------
+Copy files from ec2 Instance to local machine-
+
+sudo scp -r -i "DevOps.pem" ec2-user@ec2-13-233-252-15.ap-south-1.compute.amazonaws.com:/home/ec2-user/nginx-data/ .
+
+Copy files from local machine to ec2 instance-
+
+scp -i ./ec2keypair.pem -r ./velocity/* ec2-user@3.92.195.6:/var/www/html
+
+
+
+
+
+
+
 	
