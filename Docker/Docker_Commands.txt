@@ -836,6 +836,12 @@ Copy files from local machine to ec2 instance-
 
 scp -i ./ec2keypair.pem -r ./velocity/* ec2-user@3.92.195.6:/var/www/html
 
+sudo scp -r /home/pi/nginx-data vkhonge@192.168.0.108:/home/vkhonge/
+
+
+
+
+
 
 
 
