@@ -838,6 +838,12 @@ scp -i ./ec2keypair.pem -r ./velocity/* ec2-user@3.92.195.6:/var/www/html
 
 sudo scp -r /home/pi/nginx-data vkhonge@192.168.0.108:/home/vkhonge/
 
+To Copy entire folder from local host to ec2
+
+sudo scp -i /home/pi/SrihariDevOps.pem -r /home/pi/shell_Scripting/ ec2-user@52.53.175.108:/home/ec2-user/
+
+
+
 
 
 
