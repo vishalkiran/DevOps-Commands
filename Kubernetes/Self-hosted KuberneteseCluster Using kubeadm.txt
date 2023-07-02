@@ -1,0 +1,127 @@
+Self hosted KuberneteseCluster-Creation using kubeadm
+
+
+1 - Master Node/Control plane (t2.medium instance)
+
+2 - Worker Nodes (t2.micro instances)
+
++++++++ Master & Worker - Common Commands Execution Start ++++++++++
+
+
+Step-1: Install Docker
+
+$ sudo apt-get update 
+$ sudo apt-get install docker.io
+$ docker --version
+$ sudo usermod -aG docker $USER
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+
+
+
+Step-2: Installing Kubernetes
+
+
+# install curl
+$ sudo apt install curl
+
+# Add the GPG Kubernetes key with the command:
+$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+
+# To add the Xenial Kubernetes repository
+$ sudo apt-add-repository "deb http://apt.kubernetes.io/kubernetes-xenial main"
+
+# Installing Kubeadm (Kubernetes Admin)
+$ sudo apt-get install kubeadm kubelet kubectl kubernetes-cni
+
+# Run the below command to check whether the versions of the components installed are compatible 
+$ sudo apt-mark hold kubeadm kubelet kubectl kubernetes-cni
+
+# Check Kubeadm version
+$ kubeadm version
+
+
+# Disable swap memory 
+$ sudo swapoff -a
+
+$ sudo systemctl daemon-reload
+$ sudo systemctl start kubelet
+$ sudo systemctl enable kubelet.service
+
++++++++++++++ Master & Slave Common Commands Execution End ++++++++++
+
+
+
+
+
+
+
+
+
+
++++++++++++ Only Master Node Commands Execution Start +++++++++++
+
+Step-3: Running and Deploying Kubernetes
+
+# Initialize kubernetes on Master Node
+$ sudo kubeadm init
+
+# You need to run the following as a normal user to start using your cluster
+
+$ mkdir -p $HOME/.kube
+$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+#check nodes connected to cluster
+$ kubectl get nodes
+
+# Deploy Pod Network to Cluster
+$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+# Get worker token to add workers to cluster
+$ kubeadm token create --print-join-command
+
+
+##### Add the worker node to form a cluster by executing token in worker nodes as root user #####
+
+# Get Nodes
+# kubectl get nodes
+
+# Get the pods running
+$ kubectl get pods --all-namespaces
+
+# To restart kubelet service
+$ sudo systemctl restart kubelet.service
+
+
+
+
+
+We can access Master Node from remote machine using kubectl
+
+
+
+
+-> Launch a new EC2 VM
+-> Install Kubectl
+
+$ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubect!"
+
+$ chmod +x ./kubectl
+
+$ sudo mv./kubectl /usr/local/bin/kubectl
+
+$ kubectl version
+
+$ mkdir ~/.kube
+
+Note: Take kube config file from master node using below command and copy that.
+$ cat ~/.kube/config
+
+#Paste Master Node kube config file data here
+$ vi ~/.kube/config
+
+$kubectl cluster-info
+
+$kubectl get nodes
+
